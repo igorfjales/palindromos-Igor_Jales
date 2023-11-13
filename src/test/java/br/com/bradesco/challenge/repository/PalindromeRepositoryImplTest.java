@@ -1,21 +1,66 @@
 package br.com.bradesco.challenge.repository;
 
 import br.com.bradesco.challenge.domain.model.Palindrome;
+import br.com.bradesco.challenge.infra.repository.PalindromeRepositoryImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DataJpaTest
 public class PalindromeRepositoryImplTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    EntityManager entityManager;
+
+    @Mock
+    EntityManager testEntityManager;
+
+    private PalindromeRepositoryImpl palindromeRepository;
+
+    private PalindromeRepositoryImpl testPalindromeRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        palindromeRepository = new PalindromeRepositoryImpl(entityManager);
+        testPalindromeRepository = new PalindromeRepositoryImpl(testEntityManager);
+    }
+
+    @Test
+    public void testSave() {
+        Palindrome palindrome = Palindrome.builder()
+                .palindrome("aba")
+                .build();
+
+        Palindrome palindromeTest = Palindrome.builder()
+                .palindrome("12321")
+                .build();
+
+        Palindrome savedPalindrome = palindromeRepository.save(palindrome);
+        assertThat(savedPalindrome).isNotNull();
+        assertThat(savedPalindrome.getId()).isNotNull();
+
+        Palindrome loadedPalindrome = palindromeRepository.findById(savedPalindrome.getId()).orElse(null);
+        assertThat(loadedPalindrome).isNotNull();
+        assertThat(loadedPalindrome.getId()).isNotNull();
+
+        Palindrome testSavedPalindrome = testPalindromeRepository.save(palindromeTest);
+        assertThat(testSavedPalindrome).isNotNull();
+
+        verify(testEntityManager, times(1)).persist(any(Palindrome.class));
+    }
 
     @Test
     public void testFindById() {
@@ -23,13 +68,11 @@ public class PalindromeRepositoryImplTest {
                 .palindrome("aba")
                 .build();
 
-        Palindrome savedPalindrome = entityManager.persistAndFlush(palindrome);
+        Palindrome savedPalindrome = palindromeRepository.save(palindrome);
 
-        Palindrome foundPalindrome = entityManager.find(Palindrome.class, savedPalindrome.getId());
-        Optional<Palindrome> optionalPalindrome = foundPalindrome != null ? Optional.of(foundPalindrome) : Optional.empty();
-
-        assertThat(optionalPalindrome).isPresent();
-        assertThat(optionalPalindrome.get().getId()).isEqualTo(savedPalindrome.getId());
+        Optional<Palindrome> foundMatrix = palindromeRepository.findById(savedPalindrome.getId());
+        assertThat(foundMatrix).isPresent();
+        assertThat(foundMatrix.get().getId()).isEqualTo(savedPalindrome.getId());
     }
 
     @Test
@@ -42,13 +85,10 @@ public class PalindromeRepositoryImplTest {
                 .palindrome("aba")
                 .build();
 
-        entityManager.persistAndFlush(palindrome1);
-        entityManager.persistAndFlush(palindrome2);
+        palindromeRepository.save(palindrome1);
+        palindromeRepository.save(palindrome2);
 
-        List<Palindrome> palindromes = entityManager.getEntityManager()
-                .createQuery("from Palindrome", Palindrome.class)
-                .getResultList();
-
+        List<Palindrome> palindromes = palindromeRepository.findAll();
         assertThat(palindromes).hasSize(2);
     }
 }

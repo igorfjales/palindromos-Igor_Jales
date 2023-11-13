@@ -2,9 +2,12 @@ package br.com.bradesco.challenge.infra.repository;
 
 import br.com.bradesco.challenge.domain.model.Palindrome;
 import br.com.bradesco.challenge.domain.repository.IPalindromeRepository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +21,13 @@ public class PalindromeRepositoryImpl implements IPalindromeRepository {
 
     public PalindromeRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Override
+    @Transactional
+    public Palindrome save(Palindrome palindrome) {
+        entityManager.persist(palindrome);
+        return palindrome;
     }
 
     @Override

@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface IPalindromeRepository {
 
+    Palindrome save(Palindrome palindrome);
+
     Optional<Palindrome> findById(UUID id);
 
     List<Palindrome> findAll();
