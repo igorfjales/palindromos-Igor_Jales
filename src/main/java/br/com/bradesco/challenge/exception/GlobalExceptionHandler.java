@@ -1,11 +1,8 @@
-package br.com.bradesco.challenge.web.advice;
+package br.com.bradesco.challenge.exception;
 
-import br.com.bradesco.challenge.domain.exception.MatrixValidationException;
 import br.com.bradesco.challenge.web.response.ApiResponseError;
 import br.com.bradesco.challenge.web.response.DetailedErrorResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,17 +19,25 @@ import java.util.Map;
 
 @Slf4j
 @ControllerAdvice
-@AllArgsConstructor
 public class GlobalExceptionHandler {
 
-    private final ObjectMapper objectMapper;
-
     @ExceptionHandler(MatrixValidationException.class)
-    public ResponseEntity<ApiResponseError> handleMatrixValidationException(MatrixValidationException exception, HandlerMethod handlerMethod, HttpServletRequest request) {
+    public ResponseEntity<ApiResponseError> badRequestExceptionHandler(MatrixValidationException exception, HandlerMethod handlerMethod, HttpServletRequest request) {
         DetailedErrorResponse detailedErrorResponse = createDetailedErrorResponse(exception, handlerMethod, request, HttpStatus.BAD_REQUEST);
         ApiResponseError apiResponseError = createApiResponseError(detailedErrorResponse);
         log.error(detailedErrorResponse.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponseError);
+    }
+
+    @ExceptionHandler(value = {
+            Exception.class
+    })
+    public ResponseEntity<ApiResponseError> globalExceptionHandler(Exception exception, HandlerMethod handlerMethod, HttpServletRequest request) {
+        DetailedErrorResponse detailedErrorResponse = createDetailedErrorResponse(exception, handlerMethod, request, HttpStatus.INTERNAL_SERVER_ERROR);
+        ApiResponseError apiResponseError = createApiResponseError(detailedErrorResponse);
+        log.error(detailedErrorResponse.toString());
+        apiResponseError.setMessage("Unexpected error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponseError);
     }
 
     private ApiResponseError createApiResponseError(DetailedErrorResponse detailedErrorResponse) {
@@ -47,7 +52,7 @@ public class GlobalExceptionHandler {
         String controllerPath = handlerMethod.getMethod().getDeclaringClass().toString();
         String controllerName = handlerMethod.getMethod().getDeclaringClass().getSimpleName();
         String methodName = handlerMethod.getMethod().getName();
-        LocalDateTime timestamp = LocalDateTime.now();
+        String timestamp = Instant.now().toString();
         String message = exception.getMessage();
         String exceptionClassName = exception.getClass().getName();
         Map<String, String> queryParams = extractQueryParams(request);

@@ -1,4 +1,4 @@
-package br.com.bradesco.challenge.domain.entity;
+package br.com.bradesco.challenge.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;

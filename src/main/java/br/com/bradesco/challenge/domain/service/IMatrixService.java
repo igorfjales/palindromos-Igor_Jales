@@ -1,6 +1,6 @@
 package br.com.bradesco.challenge.domain.service;
 
-import br.com.bradesco.challenge.domain.entity.Matrix;
+import br.com.bradesco.challenge.domain.model.Matrix;
 
 import java.util.List;
 import java.util.Optional;

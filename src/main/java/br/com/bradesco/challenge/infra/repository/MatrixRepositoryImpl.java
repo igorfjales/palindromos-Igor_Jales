@@ -1,6 +1,6 @@
 package br.com.bradesco.challenge.infra.repository;
 
-import br.com.bradesco.challenge.domain.entity.Matrix;
+import br.com.bradesco.challenge.domain.model.Matrix;
 import br.com.bradesco.challenge.domain.repository.IMatrixRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,7 +15,11 @@ import java.util.UUID;
 public class MatrixRepositoryImpl implements IMatrixRepository {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public MatrixRepositoryImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     @Transactional

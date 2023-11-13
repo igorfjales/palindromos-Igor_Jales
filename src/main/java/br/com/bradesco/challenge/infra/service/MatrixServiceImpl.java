@@ -1,7 +1,6 @@
 package br.com.bradesco.challenge.infra.service;
 
-import br.com.bradesco.challenge.domain.entity.Matrix;
-import br.com.bradesco.challenge.domain.exception.MatrixValidationException;
+import br.com.bradesco.challenge.domain.model.Matrix;
 import br.com.bradesco.challenge.domain.repository.IMatrixRepository;
 import br.com.bradesco.challenge.domain.service.IMatrixService;
 import br.com.bradesco.challenge.domain.service.IMatrixValidationService;
@@ -23,10 +22,9 @@ public class MatrixServiceImpl implements IMatrixService {
 
     private final IMatrixValidationService matrixValidationService;
 
-
     @Override
     public Matrix save(Matrix matrix) {
-        matrixValidationService.validate(matrix.getMatrix());
+        matrixValidationService.validate(matrix);
         palindromeFindingService.findPalindromesInMatrix(matrix);
         return repository.save(matrix);
     }

@@ -1,7 +1,7 @@
-logging:
-  level:
+#logging:
+#  level:
 #    ROOT: DEBUG
-    br.com.bradesco.challenge: INFO
+#    br.com.bradesco.challenge: INFO
 #    org.springframework.web.client.RestTemplate: DEBUG
 #    org.springframework.web: DEBUG
 #    org.springframework.security: DEBUG
@@ -9,6 +9,10 @@ logging:
 #    com.zaxxer.hikari : DEBUG
 
 spring:
+  mvc:
+    pathmatch:
+      trailing-slash-match: true
+
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}

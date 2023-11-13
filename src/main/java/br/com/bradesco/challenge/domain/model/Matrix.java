@@ -1,4 +1,4 @@
-package br.com.bradesco.challenge.domain.entity;
+package br.com.bradesco.challenge.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,8 +50,9 @@ public class Matrix {
     private String matrixAsString;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
+    @Builder.Default
     @JsonManagedReference
     @OneToMany(mappedBy = "matrix", cascade = CascadeType.ALL)
     private List<Palindrome> palindromes = new ArrayList<>();
@@ -59,10 +60,8 @@ public class Matrix {
     @PrePersist
     @PreUpdate
     public void convertMatrixToString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            this.matrixAsString = objectMapper.writeValueAsString(this.matrix);
+            this.matrixAsString = new ObjectMapper().writeValueAsString(this.matrix);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting matrix to string", e);
         }
@@ -70,10 +69,8 @@ public class Matrix {
 
     @PostLoad
     public void convertStringToMatrix() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            this.matrix = objectMapper.readValue(this.matrixAsString, TypeFactory.defaultInstance().constructArrayType(char[].class));
+            this.matrix = new ObjectMapper().readValue(this.matrixAsString, TypeFactory.defaultInstance().constructArrayType(char[].class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting string to matrix", e);
         }

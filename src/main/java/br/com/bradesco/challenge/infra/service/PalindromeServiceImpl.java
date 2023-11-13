@@ -1,6 +1,6 @@
 package br.com.bradesco.challenge.infra.service;
 
-import br.com.bradesco.challenge.domain.entity.Palindrome;
+import br.com.bradesco.challenge.domain.model.Palindrome;
 import br.com.bradesco.challenge.domain.repository.IPalindromeRepository;
 import br.com.bradesco.challenge.domain.service.IPalindromeService;
 import lombok.AllArgsConstructor;
@@ -15,11 +15,6 @@ import java.util.UUID;
 public class PalindromeServiceImpl implements IPalindromeService {
 
     private final IPalindromeRepository repository;
-
-    @Override
-    public Palindrome save(Palindrome palindrome) {
-        return repository.save(palindrome);
-    }
 
     @Override
     public Optional<Palindrome> findById(UUID id) {
