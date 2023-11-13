@@ -1,0 +1,14 @@
+version: '3'
+services:
+  palindrome-hunt-challenge:
+    image: palindrome-hunt-challenge:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATASOURCE_CLASS_NAME
+      - DATASOURCE_PASSWORD
+      - DATASOURCE_URL
+      - DATASOURCE_USERNAME
