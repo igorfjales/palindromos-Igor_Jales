@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>2.6.0</version>
     </parent>
 
     <groupId>br.com.bradesco.challenge</groupId>
@@ -80,26 +80,35 @@
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger2</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger-ui</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.7.0</version>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -119,6 +128,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

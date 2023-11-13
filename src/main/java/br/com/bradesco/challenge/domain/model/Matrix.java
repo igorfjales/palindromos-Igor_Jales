@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.PostLoad;
+import javax.persistence.Column;
 
 
 import lombok.Builder;

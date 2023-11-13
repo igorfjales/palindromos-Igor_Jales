@@ -2,7 +2,7 @@ package br.com.bradesco.challenge.exception;
 
 import br.com.bradesco.challenge.web.response.ApiResponseError;
 import br.com.bradesco.challenge.web.response.DetailedErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
