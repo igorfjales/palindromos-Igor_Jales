@@ -38,6 +38,5 @@ public class Palindrome {
     @ManyToOne
     @JoinColumn(name = "matrix_id")
     @JsonBackReference
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Matrix matrix;
 }
