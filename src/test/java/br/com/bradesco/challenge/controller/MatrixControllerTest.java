@@ -110,7 +110,7 @@ public class MatrixControllerTest {
         ResponseEntity<Matrix> response = controller.findById(id);
 
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         Assertions.assertNull(response.getBody());
     }
 
