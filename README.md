@@ -2,34 +2,74 @@
 
 ## Descrição
 
-A Palindrome Hunt Challenge (desafio do caça-palindromo) é uma API desenvolvida como parte de um desafio proposto para
+O Palindrome Hunt Challenge (desafio do caça-palindromo) é uma API desenvolvida como parte de um desafio proposto para
 uma vaga de Engenheiro de Software. A proposta da API é realizar a caça por palíndromos em matrizes.
 
 ## Funcionalidades
 
-- **Salvar Matriz**: A API permite receber matrizes de caracteres quadradas com no máximo 10 linhas e 10 colunas e
-  salvá-las no banco de dados com os respectivos palídromos encontrados dentro delas.
+### Salvar Matriz
 
+A API permite receber matrizes de caracteres quadradas com no máximo 10 linhas e 10 colunas e
+salvá-las no banco de dados com os respectivos palídromos encontrados dentro delas.
 
-- **Buscar matriz**: Depois que uma matriz é salva, é possível buscar todas as matrizes presentes no banco de dados
-  juntamente com seus respectivos palindromos, assim como, é possível buscal individualmente uma matriz através do seu
-  ID único universal.
+#### POST http://localhost:8080/matrix
 
+Payload:
 
-- **Buscar palindromo**: Uma vez que um palindromo é encontrado dentro de uma matriz, ele também é persistido no
-  banco dedados, então, conseguimos realizar a busca de todos os palidromos já salvos, assim como realizar a
-  busca individual de um palindromor através do seu ID único universal.
+```json
+{
+  "matrix": [
+    ["A", "O", "S", "S", "O"],
+    ["Y", "R", "Z", "X", "L"],
+    ["J", "S", "A", "P", "M"],
+    ["J", "K", "P", "R", "Z"],
+    ["Y", "L", "E", "R", "A"]
+  ]
+}
+```
+
+### Buscar Matriz
+
+Depois que uma matriz é salva, é possível buscar todas as matrizes presentes no banco de dados
+juntamente com seus respectivos palindromos, assim como, é possível buscal individualmente uma matriz através do seu
+ID único universal.
+
+#### 1 - GET http://localhost:8080/matrix
+
+Busca todas as matrizes presentes no banco de dados, podendo não existir nenhuma
+
+#### 2 - GET http://localhost:8080/matrix/1f5ded19-1aec-401c-8312-639c0c7d8700
+
+Busca uma matriz específica no banco de dados, sendo _[a02f576c-0bdb-4a68-9d1c-10f6dcfcb6e2]_ o ID universal de uma
+matriz.
+
+### Buscar Palindromo
+
+Uma vez que um palindromo é identificado no salvamento de uma matriz, ele também é persistido no banco dedados, então,
+conseguimos realizar a busca de todos os palidromos já salvos, assim como realizar a busca individual de um palindromo
+através do seu ID único universal.
+
+#### 1 - GET http://localhost:8080/palindrome
+
+Busca todas os palindromos presentes no banco de dados, podendo não existir nenhuma
+
+#### 2 - GET http://localhost:8080/palindrome/1f5ded19-1aec-401c-8312-639c0c7d8700
+
+Busca um palindromo específica no banco de dados, sendo _[1f5ded19-1aec-401c-8312-639c0c7d8700]_ o ID universal de um
+palindromo.
 
 ## Tecnologias Utilizadas
 
-- **Spring Boot**: Utilizado para o desenvolvimento da aplicação.
-- **Spring Data JPA**: Utilizado para integração com o banco de dados.
-- **Lombok**: Reduz a verbosidade do código Java.
-- **Gson**: Biblioteca para manipulação de objetos JSON.
-- **H2 Database**: Banco de dados em memória.
-- **Logstash Logback Encoder**: Utilizado para formatar logs no padrão Logstash.
-- **JUnit**: Framework de testes.
-- **Springdoc OpenAPI UI**: Ferramenta para visualização e interação com a documentação OpenAPI da API.
+| Tecnologia                | Descrição                                                                                                                                                           |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Spring Boot               | Framework baseado em Java para criar aplicações stand-alone, produção-pronta e baseadas em Spring de forma rápida e conveniente. Foi utilizado para o desenvolvimento principal da aplicação.                              |
+| Spring Data JPA           | Uma parte do Spring Framework que simplifica o acesso aos dados em aplicações Java, fornecendo um modelo de programação familiar e consistente. Utilizado para integração com o banco de dados.                            |
+| H2 Database               | Um banco de dados relacional escrito em Java. É rápido e oferece um modo em memória, útil para testes ou demonstrações.                                                |
+| Lombok                    | Uma biblioteca Java que reduz a verbosidade do código, fornecendo anotações para gerar getters, setters, construtores e outros métodos comuns.                         |
+| Gson                      | Uma biblioteca Java desenvolvida pelo Google para converter objetos Java em JSON e vice-versa. Utilizada para manipulação de objetos JSON.                             |
+| Logstash Logback Encoder  | Uma biblioteca que formata logs como JSON, facilitando a análise e visualização dos logs.                                                                          |
+| JUnit                     | Um framework de testes para Java, permitindo escrever testes de unidade de forma rápida e fácil. Utilizado para testar a lógica da aplicação.                           |
+| Springdoc OpenAPI UI      | Uma biblioteca que simplifica a geração e visualização da documentação da API OpenAPI para aplicações Spring Boot. Utilizada para fornecer uma interface de usuário para visualizar e interagir com a documentação da API. |
 
 ## Instruções de Uso
 
@@ -84,10 +124,27 @@ mvn clean spring-boot:run -Dspring-boot.run.arguments="--DATASOURCE_URL=jdbc:h2:
 
 Se preferir, a aplicação pode ser executada em um contêiner Docker:
 
-#### Comando para Construir a Imagem e Executar o Contêiner:
+#### Comando para Construir a Imagem 
+```bash
+docker build -t palindrome-hunt-challenge:latest .
+```
+#### Comando para executar o contêiner:
+```bash
+docker run -e DATASOURCE_PASSWORD=password -e DATASOURCE_URL="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -e DATASOURCE_USERNAME=sa -p 8080:8080 palindrome-hunt-challenge:latest
+```
 
+Podendo executar os dois juntos de uma vez:
 ```bash
 docker build -t palindrome-hunt-challenge:latest . && docker run -e DATASOURCE_PASSWORD=password -e DATASOURCE_URL="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -e DATASOURCE_USERNAME=sa -p 8080:8080 palindrome-hunt-challenge:latest
+```
+
+Ou dar pull direto da imagem no docker HUB 
+```bash
+docker pull igorfjales/palindrome-hunt-challenge:latest
+```
+e só executar o comando de run
+```bash
+docker run -e DATASOURCE_PASSWORD=password -e DATASOURCE_URL="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -e DATASOURCE_USERNAME=sa -p 8080:8080 palindrome-hunt-challenge:latest
 ```
 
 - **Observações**:
@@ -122,5 +179,7 @@ execução de testes e a verificação da cobertura de código. Siga as etapas a
    mvn clean verify
    ```
 
-2. Após a conclusão do comando, você poderá visualizar os resultados da cobertura de código no relatório gerado. Os relatórios geralmente são encontrados no diretório `target/site/jacoco/index.html`. Abra esse arquivo em um navegador para analisar detalhadamente a cobertura de código.
+2. Após a conclusão do comando, você poderá visualizar os resultados da cobertura de código no relatório gerado. Os
+   relatórios geralmente são encontrados no diretório `target/site/jacoco/index.html`. Abra esse arquivo em um navegador
+   para analisar detalhadamente a cobertura de código.
 
