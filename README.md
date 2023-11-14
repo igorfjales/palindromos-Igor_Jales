@@ -3,7 +3,7 @@
 ## Descrição
 
 A Palindrome Hunt Challenge (desafio do caça-palindromo) é uma API desenvolvida como parte de um desafio proposto para
-uma vaga de engenheiro de software full stack. A proposta da API é realizar a caça por palíndromos em matrizes.
+uma vaga de Engenheiro de Software. A proposta da API é realizar a caça por palíndromos em matrizes.
 
 ## Funcionalidades
 
@@ -111,7 +111,16 @@ Para iniciar a aplicação, siga as instruções na seção anterior.
 
 Os testes podem ser executados com o comando: `mvn test`
 
-### Cobertura de Testes
+### Relatório de Cobertura de Testes
 
-A cobertura de testes pode ser gerada com o comando: `mvn jacoco:report`
+Use o comando Maven `mvn clean verify`. Este comando realiza várias etapas, incluindo a compilação do projeto, a
+execução de testes e a verificação da cobertura de código. Siga as etapas abaixo:
+
+1. Execute o seguinte comando para realizar a limpeza do projeto, compilar o código-fonte, executar os testes e
+   verificar a cobertura:
+   ```bash
+   mvn clean verify
+   ```
+
+2. Após a conclusão do comando, você poderá visualizar os resultados da cobertura de código no relatório gerado. Os relatórios geralmente são encontrados no diretório `target/site/jacoco/index.html`. Abra esse arquivo em um navegador para analisar detalhadamente a cobertura de código.
 
