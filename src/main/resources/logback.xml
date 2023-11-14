@@ -18,25 +18,9 @@
                     <fieldName>message</fieldName>
                 </message>
 
-                <mdc> <!-- Mapped Diagnostic Context -->
+                <mdc>
                     <fieldName>context</fieldName>
                 </mdc>
-
-                <!--                <pattern>-->
-                <!--                    <pattern>-->
-                <!--                        {-->
-                <!--                        "application": {-->
-                <!--                        "name": "MyApp",-->
-                <!--                        "module": "Authentication",-->
-                <!--                        "version": "1.0.0"-->
-                <!--                        },-->
-                <!--                        "server": {-->
-                <!--                        "id": "i-0abcd1234efgh5678",-->
-                <!--                        "region": "us-west-2"-->
-                <!--                        }-->
-                <!--                        }-->
-                <!--                    </pattern>-->
-                <!--                </pattern>-->
             </providers>
         </encoder>
     </appender>
