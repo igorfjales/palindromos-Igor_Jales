@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 public class MatrixValidationServiceImpl implements IMatrixValidationService {
     private static final int MAX_SIZE = 10;
 
-
-
+    private static final int MIN_SIZE = 3;
 
 
     public void validate(Matrix matrixModel) {
@@ -23,28 +22,22 @@ public class MatrixValidationServiceImpl implements IMatrixValidationService {
         int rows = matrix.length;
         int columns = matrix[0].length;
 
-        for (int i = 0; i < rows; i++) {
-            if (matrix[i].length != columns) {
-                throw new MatrixValidationException("All rows must have the same number of columns");
-            }
-        }
-
-        for (int j = 0; j < columns; j++) {
-            int currentColumnSize = matrix[0].length;
-
-            for (int i = 1; i < rows; i++) {
-                if (matrix[i].length != currentColumnSize) {
-                    throw new MatrixValidationException("All columns must have the same number of rows");
-                }
-            }
-        }
-
         if (rows > MAX_SIZE || columns > MAX_SIZE) {
             throw new MatrixValidationException("Matrix cannot have more than " + MAX_SIZE + " rows or columns");
         }
 
+        if (rows < MIN_SIZE || columns < MIN_SIZE) {
+            throw new MatrixValidationException("Matrix must have at least " + MIN_SIZE + " rows and columns");
+        }
+
         if (rows != columns) {
             throw new MatrixValidationException("Matrix must be square");
+        } else {
+            for (char[] chars : matrix) {
+                if (chars.length != columns) {
+                    throw new MatrixValidationException("Matrix must be square");
+                }
+            }
         }
     }
 }
